@@ -13,7 +13,7 @@ library(rmarkdown)
 
 ```{r setup, echo=TRUE}
 opts_chunk$set(echo = TRUE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQ-R-WORKSHOP-2018/Scripts/Day 1/Day1_3.2.Loading_and_manipulating_data.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_3.2.Loading_and_manipulating_data.R')
 ```
 
 # 1. Reading in data

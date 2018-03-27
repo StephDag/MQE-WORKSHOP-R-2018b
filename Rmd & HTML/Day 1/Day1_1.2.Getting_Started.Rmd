@@ -1,6 +1,6 @@
 ---
 title: "1.2. R Data Manipulation - Getting started"
-author: Adapted from Software Carpentry; modified by Maina,Stephanie
+author: Adapted from Software Carpentry; modified by Maina and Stephanie
 date: "13 March 2018"
 output: html_document
 ---
@@ -13,7 +13,7 @@ library(rmarkdown)
 
 ```{r setup, echo=FALSE}
 opts_chunk$set(echo = FALSE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQ-R-WORKSHOP-2018/Scripts/Day 1/Day1_1.2. Getting_Started.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_1.2. Getting_Started.R')
 ```
 
 # 1. Using R as a calculator

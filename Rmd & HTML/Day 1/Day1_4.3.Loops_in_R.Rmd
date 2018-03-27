@@ -1,6 +1,6 @@
 ---
 title: "4.3. Loops in R"
-author: Adapted from Software Carpentry; modified by Maina,Stephanie
+author: Adapted from Software Carpentry; modified by Maina and Stephanie
 date: "13th of March 2018"
 output: html_document
 ---
@@ -12,7 +12,7 @@ library(rmarkdown)
 
 ```{r setup, echo=FALSE}
 #opts_chunk$set(echo = FALSE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQE-R-WORKSHOP-2018/Scripts/Day 1/Day1_4.3.Loops_in_R.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_4.3.Loops_in_R.R')
 ```
 
 **Questions**
@@ -128,7 +128,7 @@ No, they are not! *If* you follow some golden rules:
   
 As an example, we'll create a new version of `analyze` that will return the mean inflammation per day (column) of each file.
 
-```{r LR13,echo=-1}
+```{r LR13,echo=-1,eval=FALSE}
 #analyze2 <- function(filenames) {
 #  for (f in seq_along(filenames)) {
 #    fdata <- read.csv(filenames[f], header = FALSE)

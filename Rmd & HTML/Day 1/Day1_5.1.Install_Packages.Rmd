@@ -12,7 +12,7 @@ library(rmarkdown)
 
 ```{r setup, echo=FALSE}
 #opts_chunk$set(echo = FALSE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQE-R-WORKSHOP-2018/Scripts/Day 1/Day1_5.1.Install_Packages.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_5.1.Install_Packages.R')
 ```
 
 ## Installing and managing packages

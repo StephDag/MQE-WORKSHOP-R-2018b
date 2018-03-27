@@ -1,6 +1,6 @@
 ---
 title: "3.1.Reading and writing CSV files"
-author: Adapted from Software Carpentry; modified by Maina,Stephanie
+author: Adapted from Software Carpentry; modified by Maina and Stephanie
 date: "13th of March 2018"
 output: html_document
 ---
@@ -12,7 +12,7 @@ library(rmarkdown)
 
 ```{r setup, echo=FALSE}
 opts_chunk$set(echo = FALSE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQ-R-WORKSHOP-2018/Scripts/Day 1/Day1_3.1.Reading and writing CSV.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_3.1.Reading and writing CSV.R')
 ```
 
 **Questions**

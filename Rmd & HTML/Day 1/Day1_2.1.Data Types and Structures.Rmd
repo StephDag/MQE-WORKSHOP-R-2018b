@@ -1,6 +1,6 @@
 ---
 title: "2.1. Data Types and Structures"
-author: Adapted from Software Carpentry; modified by Maina,Stephanie
+author: "Adapted from Software Carpentry; modified by Maina and Stephanie"
 date: "13th of March 2018"
 output: html_document
 ---
@@ -11,7 +11,7 @@ library(rmarkdown)
 
 ```{r setup, echo=FALSE}
 #opts_chunk$set(echo = FALSE, cache=FALSE)
-read_chunk('/Users/stephdagata/Documents/GitHub/MQ-R-WORKSHOP-2018/Scripts/Day 1/Day1_2.1.Data_Types_and_Structures.R')
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 1/Day1_2.1.Data_Types_and_Structures.R')
 ```
 
 **Questions**
