@@ -1,0 +1,604 @@
+---
+title: "Day 2 - Data Manipulation in R"
+author: "originally prepared by David Nipperess and modified by Matthew Kosnik"
+date: "20/03/2018"
+output: html_document
+---
+
+```{r echo=F}
+library(knitr)
+library(rmarkdown)
+```
+
+
+```{r setup, echo=FALSE}
+read_chunk('/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 2/wiomsaDataManipulation/DataManipulationScript.R')
+```
+
+
+## Preliminary 1: Set up workspace
+
+  + Set up a new project in R Studio
+  + Where is your working directory?
+  + Are the files you need in your working directory?
+
+## Preliminary 2: Data objects in R
+
+This should all be review from yesterday, but it is a good review as. it is important.
+
+  + Define a vector of the numerical values 1 to 27 and assign to an object called x
+
+```{r DM1}
+x <- 1:27
+x
+```
+
+  + Define a matrix (assign to y) with 9 rows and 3 columns using the data in x
+  
+```{r DM2}
+y <- matrix(data=x, nrow=9, ncol=3)
+y
+```
+
+  + Extract a vector from y using the numerical indices in x
+  
+```{r DM3}
+y[x]  # referencing an object with another object
+```
+
+  + Define a 3-dimensional array (assign to z) with 3 rows, 3 columns and 3 layers, using the data in x
+  
+```{r DM4}
+z <- array(data=x,dim=c(3,3,3))
+z
+```
+
+```{r DM5}
+z[1,,]
+```
+
+```{r DM6}
+z[x]
+```
+
+  + Extract a reversed vector from z using x
+  
+```{r DM7}
+z[rev(x)]
+```
+
+#### **QUESTION**: What does the function `rev()` do? 
+#### **QUESTION**: How can you find out?
+
+  + Browse the datasets available in R, find Edgar Anderson's Iris data and load it as a dataframe 
+  + 50 replicate measurements for each of 3 species of Iris
+  
+```{r DM8}
+data()
+```
+
+```{r DM9}
+data(iris)
+```
+
+#### **QUESTION**: what does `head()` do?
+
+```{r DM10}
+head(iris)
+```
+
+#### **QUESTION**: what does `dim()` do?
+
+```{r DM11}
+dim(iris)
+```
+
+#### **QUESTION**: what does `mode()` do?
+```{r DM12}
+mode(iris)
+```
+
+  + Use `as.matrix()` to convert the iris dataset to a matrix and use `head()` & `mode()` to check the data
+  
+```{r DM13}
+iris2 <- as.matrix(iris)
+head(iris2)		# Question: why quotes?
+mode(iris2)		# Question: character?
+```
+
+#### **QUESTION**: what happens when you try to take the mean of `iris2[,'Sepal.Length']`
+```{r DM14}
+mean(iris2[,'Sepal.Length'])		# Problem...
+```
+
+  + Use `as.matrix()` to convert only the numeric columns of iris dataset. Check the data.
+  
+```{r DM15}
+iris3 <- as.matrix(iris[,1:4])
+head(iris3)
+mode(iris3)
+```
+
+#### **QUESTION**: what is the mean sepal length?
+
+```{r DM16}
+mean(iris3[,'Sepal.Length'])				# Answer...
+```
+
+#### **QUESTION**: how might we work around this issue, hint: `as.numeric()`?
+
+```{r DM17}
+mean(as.numeric(iris2[,'Sepal.Length']))	# Work around.
+```
+
+  + Using matrices instead of data frames 
+
+When data is all numbers (except for row and column names), I normally use matrices rather than dataframes
+if you have row names in your data file, and you want to convert to a matrix, you will need to specify which column has the row names (see the row.names argument in the read.table function)
+
+# Exercise 1: Reading data 
+
+Use the `read.table` (and related functions) to read in datafiles: `"carbonateMetaData.txt"`, `"carbonateMassData.csv"`, `"carbonateSynonomy.csv"`
+
+**ABOUT THESE DATA**: These are sediment samples from Heron Reef. Students were instructed to sort the sediment into the organisms that created it, and to report the weight of each taxonomic group in grams. "carbonateMassData.csv" contains the mass by taxonomic group data. `"carbonateMetaData.txt"` contains metadata - information aboit the sample provided to the students. "carbonateSynonomy.csv" is a list of spelling corrections and synonomies that I use to harmonise the data without changing the original data.
+
+  + **TIP**: always inspect your data BEFORE attempting to import into R 
+
+Use `read.table()` to read `carbonateMetaData.txt`. `read.table()` is the generic function
+
+```{r DM18,echo=2}
+cMeta <- read.table("./data/carbonateMetaData.txt", header=TRUE, sep="\t", as.is=TRUE)
+```
+
+  + `read.delim()` is `read.table()`, but will default values set for tab-delimited files
+  + Use it to read `./data/carbonateMetaData.txt`
+
+```{r DM19,echo=2}
+cMeta <- read.delim("./data/carbonateMetaData.txt")
+```
+
+  + `read.table()` is the generic function and can read csv files...
+  
+```{r DM20,echo=2}
+cMass <- read.table('./data/carbonateMassData.csv', header = TRUE, sep = ",", quote = "\"", fill = TRUE, comment.char = "", as.is=TRUE)
+```
+
+  + `read.csv()` is `read.table()`, but will default values set for csv files
+  + Use it to read: `./data/carbonateSynonomy.csv`
+
+```{r DM21,echo=2}
+cSyn <-read.csv('./data/carbonateSynonomy.csv', skip=5, as.is=TRUE)
+```
+
+####	**QUESTION**: What does `'as.is'` do, and why might we want to use it?
+####	**QUESTION**: What does `'skip'` do, and why might we want to use it?
+
+  + **TIP**: always inspect your data AFTER importing to make sure you have imported it correctly...
+  
+####	**QUESTION**: What do each of these functions: `head()`, `tail()`, `nrow()`, `dims()`, `summary()` do?
+
+```{r DM22}
+head(cMass)
+```
+
+```{r DM23}
+tail(cMeta)
+```
+
+```{r DM24}
+nrow(cMeta)
+```
+
+```{r DM25}
+summary(cMass)
+```
+
+  +  Different ways to reference columns, it should all work.
+  
+```{r DM26,results="hide"}
+cMass[,"mass"]
+```
+```{r DM27,results="hide"}
+cMass[["mass"]]
+```
+```{r DM28,results="hide"}
+cMass$mass
+````
+
+## Exercise 2: Subsetting data
+
+#### 	**QUESTION**: How many taxon occurences have a `mass > 25` (in data frame `cMass`)?
+
+```{r DM29,results="hide"}
+cMass[(cMass$mass>25),]			# this lists, but does not count, the taxon occurences
+```
+
+#### **QUESTION**: What does `(cMass$mass>25)` return?
+
+```{r DM30}
+length(cMass$mass>25) 
+```
+
+#### **QUESTION**: Why is this not the answer we want?
+
+```{r DM31}
+length(which(cMass$mass>25))	
+```
+
+#### **QUESTION**: Why is this the answer we want?
+#### **QUESTION**: What does `which()` return?
+
+```{r DM32}
+which(cMass$mass>25)
+```
+
+#### 	**QUESTION**: How much carbonate is from taxon occurences having a `mass > 25` (in data frame cMass)?
+
+```{r DM33}
+sum(which(cMass$mass>25)) 					# does not work as intended... what does which return?
+```
+
+```{r DM34}
+sum(cMass[which(cMass$mass>25),'mass'])		# this is the answer we want.
+```
+
+
+####	**QUESTION**: What is the average mass of Gastropoda in these samples?
+
+```{r DM35}
+mean(cMass$mass[(cMass$taxon == 'Gastropoda')])		# is this what we want?
+```
+
+Let's double check that all the `"Gastropoda"` will match `"Gastropoda`
+
+```{r DM36}
+unique(cMass$taxon)
+```
+
+
+```{r DM37}
+unique(sort(cMass$taxon))		# what do each of these functions do?
+```
+
+A strict match is not what we want... We could manually list all the row numbers...
+
+```{r DM38}
+cMass[c(9,21,32),] 					# but we would need to list all the rows with gastropod data
+```
+
+```{r DM39}
+mean(cMass[c(9,21,32),'mass'])		# will work but painfully and inflexible.
+```
+
+A more robust solution (we will get to an even better solution later)
+
+```{r DM40,eval=FALSE}
+?grep
+```
+
+```{r DM41}
+grep("Gastropod", cMass$taxon, ignore.case=TRUE)
+```
+
+```{r DM42}
+cMass[grep("Gastropod", cMass$taxon, ignore.case=TRUE),]
+```
+
+Since we know taxon names are case insentitive...
+
+```{r DM43}
+cMass$taxon <- tolower(cMass$taxon)
+```
+
+```{r DM44}
+mean(cMass$mass[grep("gastropod", cMass$taxon)])
+```
+
+### Exercise: what is the biggest bivalve mass?
+**Hint**: `max()`,`grep()`
+
+
+# Exercise 3: Aggregating data
+
+Use `aggregate()` produce a table of the total idenfied mass from each sample
+
+```{r DM45}
+?aggregate
+```
+
+
+```{r DM46}
+( sampleMass <- aggregate(cMass$mass,by=list(cMass$sample),FUN=sum) )
+colnames(sampleMass) <- c('ID','massIdentified')
+head(sampleMass)
+```
+
+Now we have a summary table tellling us how much sample they were able to identify
+You can aggregate multiple data columns at one time (using the same function).
+
+
+# Exercise 4: Matching data
+
+Since I know how much sample they had to start with - how much of sample did they identify?
+
+```{r DM47}
+?merge
+```
+
+```{r DM48}
+( mergedSamples <- merge(cMeta,sampleMass) )		
+```
+What does the extra set of `()` do?
+
+Now we have the original sample mass and the identified sample mass in the same dataframe.
+
+```{r DM49}
+mergedSamples$proID <- mergedSamples$massIdentified / mergedSamples$mass
+```
+
+Now we have the proportion of each sample identified, did big samples have less identified?
+
+```{r DM50}
+plot(mergedSamples$proID ~ mergedSamples$mass)	#no, but we have found a couple of lazy students!
+```
+
+We can also use merge to clean up our names
+Let's clean up our names - are we missing any names from our synonomy list?
+
+```{r DM51}
+cMass[!(cMass$taxon%in%cSyn$badName),]
+```
+
+```{r DM52}
+cMass[!((cMass$taxon%in%cSyn$badName)|(cMass$taxon%in%cSyn$taxonName)),]
+```
+
+```{r DM53}
+cMass2 <- merge(cMass,cSyn, by.x='taxon',by.y='badName')
+head(cMass2)
+```
+
+```{r DM54}
+cMass2[(cMass2$taxon=='cirripedia'),]					# here lies the biggest danger of merge
+```
+
+```{r DM55}
+nrow(cMass)
+```
+
+```{r DM56}
+nrow(cMass2)											# we lost data
+```
+
+```{r DM57}
+cMass[cMass$sample =='E01',]							# compare sample 1 in the oringal data
+```
+
+```{r DM58}
+cMass2[cMass2$sample =='E01',]							# compare sample 1 in the merged data
+```
+
+```{r DM59}
+cMass2 <- merge(cMass,cSyn, by.x='taxon',by.y='badName', all.x=TRUE) 	# the fix
+```
+
+```{r DM60}
+nrow(cMass) == nrow(cMass2)
+```
+
+```{r DM61}
+cMass[cMass$sample =='E01',]							# compare sample 1 in the oringal data
+```
+
+```{r DM62}
+cMass2[cMass2$sample =='E01',]							# compare sample 1 in the merged data
+```
+
+```{r DM63}
+cMass2[is.na(cMass2$taxonName),]
+```
+
+```{r DM64}
+cMass2[is.na(cMass2$taxonName),'taxonName'] <- cMass2[is.na(cMass2$taxonName),'taxon']
+```
+
+```{r DM65}
+cMass2[cMass2$sample =='E01',]							# see sample 1 in the merged data
+```
+
+Now we have nice dataset that we can use, but we have a strict record of the changes we made to the orignal data.
+We could download the data again and be able to quickly repeat our analyses without a lot of painfil edits.
+
+# Exercise 5: Tabulating data 
+
+**NEW DATA!**
+Sames of larger benthic forams from Heron Island, Great Barrier Reef.
+
+```{r DM66,echo= c(2,3)}
+forams <- read.csv('./data/2017foramAnon.csv')
+foramNames <- read.csv('./data/codesForams.csv')
+```
+
+  + Produce an incidence (presence/absence) matrix of species for all samples
+
+```{r DM67}
+?table
+```
+
+```{r DM68}
+incidence_table <- table(forams$sample, forams$taxonCode)
+incidence_table		# give us the number of rows for each foram at each site... (abundance)
+```
+
+  + Make it a presence/absence matrix 
+  
+```{r DM69}
+incidence_table[incidence_table>1] <- 1
+```
+
+`ifelse(incidence_table>0,yes=1,no=0)`  is an alternative way to do find and replace.
+
+```{r DM70}
+incidence_table
+```
+
+Imagine the data in a slightly different format.... ((review of aggregate))
+  + Use `aggregate()` to determine the abundance of foram taxa by sample and taxonCode. **Hint**: `length()`
+  
+```{r DM71}
+foramAbundance <- aggregate(forams$taxonCode,by=list(forams$sample, forams$taxonCode),FUN=length)
+colnames(foramAbundance) <- c('sample','taxonCode','abundance')
+```
+
+  + - use `merge()` to add the taxon names to the file
+  
+```{r DM72}
+foramAbundance <- merge(foramAbundance, foramNames, by.x='taxonCode', by.y='code')
+```
+
+  + check the merged file to make sure it is what we want it to be
+
+```{r DM73}
+head(foramAbundance)
+```
+
+  + produce an abundance matrix of all foram species for all sites
+
+  + produce an abundance matrix of all foram species for all sites using foramAbundance
+  
+**Hint**: use `tapply()` & `sum()`
+
+```{r DM74}
+?tapply
+```
+
+```{r DM75}
+abundance_table <- tapply(foramAbundance$abundance,list(foramAbundance$sample, foramAbundance$name),FUN="sum")
+```
+
+  + check to make sure that it looks like it should...
+
+```{r DM76}
+abundance_table[1:5,1:5]
+```
+
+```{r DM77}
+is.na(abundance_table[1:5,1:5])
+```
+
+How do we change the `NA` to `0`? `NA` can be a pain!
+
+```{r DM78}
+abundance_table[is.na(abundance_table)] <- 0
+```
+
+Check to make sure that it looks like it should...
+
+```{r DM79}
+abundance_table[1:5,1:5] # now an absence is what we want it to be (0) instead of NA.
+```
+
+# Exercise 6: Custom tabulation 
+
+Using an `apply` function on the abundance table
+
+  + First let's define an inverse simpson function
+  + Sum of the proportional abundances squared
+  + *https://en.wikipedia.org/wiki/Diversity_index#Inverse_Simpson_index*
+  + Convert the matrix to proportional abundances
+  
+```{r DM80}
+p <- abundance_table/sum(abundance_table) # this doesn't work
+```
+
+```{r DM81}
+sum(p) # this is why it doesn't work
+```
+
+```{r DM82}
+p <- abundance_table[1,]/sum(abundance_table[1,])
+p
+```
+
+```{r DM83}
+sum(p)
+```
+
+```{r DM84}
+simp <- sum(p^2)
+simp
+```
+
+```{r DM85}
+isimp <- 1/sum(p^2)
+isimp
+```
+
+  + Lets wrap that as a function
+  + Needs: x a list of abundances
+  + Returns: inverse simpson index
+  
+```{r DM86}
+invsimp <- function(x) {
+	p <- x/sum(x)
+	invsimp <- 1/sum(p^2)
+}
+```
+
+  + Double check that this works
+  
+```{r DM87}
+isimp2 <- invsimp(abundance_table[1,])
+isimp2
+```
+
+  + Get site diversity for every site with just one line of code!
+  + Use: `apply()` and `invsimp()`
+  
+```{r DM88}
+site_diversity <- apply(abundance_table,MARGIN=1,FUN=invsimp)
+site_diversity
+```
+
+# Exercise 6: Sorting data 
+
+Use `sort()` to sort the foramAbundance data by decreasing abundance
+
+```{r DM89}
+?sort
+```
+
+```{r DM90}
+sort(foramAbundance$abundance, decreasing = TRUE) # simple option for vectors
+```
+
+#### **QUESTION**: how is `order()` different than `sort()`
+This returns index numbers instead of values. 
+`order()` is useful if you need to sort a dataframe or matrix by the values in one column.
+
+```{r DM91}
+order(foramAbundance$abundance, decreasing = TRUE) 
+```
+
+#### **EXERCISE**: use `order()` to sort foramAbundance by decreasing abundance
+```{r DM92}
+foramAbundance[order(foramAbundance$abundance, decreasing = TRUE),]
+```
+
+# Exercise 7: Random sampling of data 
+
+```{r DM93}
+?sample
+```
+
+```{r DM94}
+sample(1:100,size=5,replace=FALSE)
+```
+
+#### **EXERCISE**: produce a 5x5 submatrix from the abundance table using random sampling
+**Hint**: `nrow()` & `ncol()` can help
+
+```{r DM95}
+submat <- abundance_table[sample(1:nrow(abundance_table),size=5),sample(1:ncol(abundance_table),size=5)]
+submat # note that everyone will get a different matrix!
+```
