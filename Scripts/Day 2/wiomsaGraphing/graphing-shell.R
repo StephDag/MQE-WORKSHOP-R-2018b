@@ -1,10 +1,40 @@
-## ORIGINALLY BASED ON WORK BY: JOSHUA MADIN
-## http://acropora.bio.mq.edu.au/resources/introduction-to-r/graphing/
-##
-##	MODIFIED BY M. KOSNIK IN 2017.OCT
+################################  FILE LICENSE  ################################
+#
+#	This file is copyright (C) 2018 Matthew Kosnik
+#
+#	This program is free software; you can redistribute it and/or modify it 
+#	under the terms of version 2 the GNU General Public License as published 
+#	by the Free Software Foundation.
+#
+#	This program is distributed in the hope that it will be useful, but WITHOUT
+#	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+#	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+#	more details.
+#
+#	To view a copy of the license go to:
+#	http://www.fsf.org/copyleft/gpl.html
+#	To receive a copy of the GNU General Public License write the Free Software
+# 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+################################################################################
+
+###############################  ABOUT THIS CODE  ##############################
+#
+#	This file contains R code for the "Graphing in R" session
+#		originally created by Joshua Madin
+#		modified by Matthew Kosnik
+#		last modified 2018.11.12
+#
+#	If something in this file is useful to you... please use it, and feel free
+#	to contact me should you have any questions.
+#
+#	Matthew Kosnik: mkosnik@alumni.uchicago.edu
+#
+################################################################################
+
 
 ##	WE NEED SOME DATA TO PLAY WITH
-#######################################
+################################################################################
 #	Individual bivalves collected from soft sediment at One Tree Reef with measurements.
 #	This is a similified version of the data related to this research:
 #
@@ -17,158 +47,173 @@
 #	a comparison of 210Pb and 14C/amino acid racemization chronologies
 #	Coral Reefs (2015) 34:215–229. http://dx.doi.org/10.1007/s00338-014-1234-2 
 
-##	READ A TAB DELIMITED FILE './data/oti_measurements.txt'
+# READ A TAB DELIMITED FILE './data/oti_measurements.txt'
 otiShells <- 
 
-##	WHAT HAVE WE GOT HERE?
+# QUESTION: WHAT HAVE WE GOT HERE, ANYTHING FISHY?
 
-# ANYTHING FISHY?
+
 
 # RE-IMPORT & CLEAN UP AS NEEDED
 
-## REVIEW: DIFFERENT WAYS REFERENCE COLUMNS, SHOULD ALL WORK
+
+
+
+# REVIEW: DIFFERENT WAYS REFERENCE COLUMNS, SHOULD ALL WORK
 otiShells[1:10,"x_mm"] 
 otiShells[["x_mm"]][1:10]
 otiShells$x_mm[1:10]
 
-## IF YOU ARE GOING TO USE IT A BUNCH - MAKE A NEW COLUMN FOR THE TRANSFORMED VARIABLE
-otiShells$crMass <- otiShells$mass_mg^(1/3)
+# IF YOU ARE GOING TO USE IT A BUNCH - MAKE A NEW COLUMN FOR THE TRANSFORMED VARIABLE
+# EXERCISE: make a new column 'crMass' that contains the cube root of mass
+otiShells$crMass <- 
 
-#######################################
+
 ## HISTOGRAMS
-#######################################
+################################################################################
 ? hist()
 
 #################
 ## PLOT HISTOGRAM OF SHELL SIZE
 hist()
 
-## LETS ADD BETTER AXIS LABELS
+## LETS ADD BETTER AXIS LABELS, xlab
 
-## LETS COLOUR OUR COLUMNS & ADD MAIN TITLE
 
-## plot a histogram of log shell mass?
+## LETS COLOUR OUR COLUMNS & ADD MAIN TITLE, col & main
+## ANOTHER WAY TO SPECIFY COLOURS, rgb()
 
-# QUESTION: which log is this?
+
+## EXERCISE: plot a histogram of log shell mass, log()?
+## QUESTION: which log is this?
+
 
 ## WHAT ELSE CAN "hist()" DO?
 aHist <- hist(log2(otiShells[grep('Abranda',otiShells$taxonName),'mass_mg']), plot=FALSE)
 
 # QUESTION: tell me about object aHist
 
-## MAKE A HISTOGRAM FOR LOG ABRANDA SHELL MASS... WITH NO AXES OR LABELS
+
+## EXERCISE: MAKE A HISTOGRAM FOR LOG ABRANDA SHELL MASS... WITH NO AXES OR LABELS
 plot(aHist, col='seagreen', )
 
-## ADD Y axis() MANUALLY (ALLOWS FOR GREATER CONTROL)
+## EXERCISE: ADD Y axis() MANUALLY (ALLOWS FOR GREATER CONTROL)
 ? axis()
-	# identical to what would have been drawn from hist()
 
-## SPECIFY A COMPLEX AXIS
+# NOTE: by default identical to what would have been drawn from hist()
+
+## EXAMPLE: SPECIFY A CUSTOM AXIS
 where <- seq(floor(min(aHist$breaks)),ceiling(max(aHist$breaks)),by=2)
 what <- 2^where
 axis(1, at=where, labels=what, lwd=2, lty=3, col='blue', font=3)	 # specify details of line 
 
 ## ANOTHER WAY TO ADD MARGIN TEXT (AKA - LABEL)
 ? mtext()
-mtext("Abranda", side=, line=-2, font=, adj=, cex=)	# big, bold italic font right side
 
-# USE mtext() to add title to x-axis
+# EXERCISE: add to the right side of the plot, a large, bold italic font axis label 
+mtext("Abranda", side=, line=-2, cex=, font=, adj=)
+
+# EXERCISE: use mtext() to add title "Shell mass (mg)" to the x-axis
+
 
 ## WHAT OTHER OPTIONS DOES HISTOGRAM HAVE?
 ? hist()
+
 ## SET "breaks"
 aHist <- hist(otiShells[grep('Abranda',otiShells$taxonName),'x_mm'], plot=FALSE, breaks=0:28)
 aHist
 plot(aHist, col='seagreen', ann=FALSE, axes=TRUE, las=1)
 
-## use mtext() to add labels & text...
+## EXERCISE: use mtext() to add labels & text...
 
 
-#######################################
+
+
+
 ## BIVARIATE PLOTS
-#######################################
+################################################################################
 ? plot()
 
-## subset the data to get only Pinguitellina
+## EXERCISE: assign on the only Pinguitellina data to pingData
 pingData <- 
 
-## SPECIFY THE COLUMN WITH THE X DATA AND THE COLUMN WITH THE Y DATA
-# plot() x_mm on the x-axis vs mass_mg on the y-axis
+# EXERCISE: use plot() with x_mm on the x-axis vs mass_mg on the y-axis
 plot()
 
 ## ALTERNATIVELY, USE FORMULA NOTATION (SAME PLOT, BUT BETTER DEFAULT AXIS LABELS)
 plot(mass_mg ~ x_mm, pingData)
 
-## PLOT IT WITH A CUBE ROOT TRANSFORM ON THE Y AXIS?
+## EXERCISE: PLOT IT WITH A CUBE ROOT TRANSFORM ON THE Y AXIS?
 plot() 
 
-## LETS MAKE NICER AXIS LABELS USING xlab, ylab & col
+## EXERCISE: MAKE NICER AXIS LABELS USING xlab, ylab & col
 
 
-## LETS MAKE IT PLOT LINES INSTEAD (what other options are there?)
+## EXERCISE: MAKE IT PLOT LINES INSTEAD (what other options are there?)
 
 
-## IF YOU ARE GOING TO USE IT A BUNCH - MAKE A NEW COLUMN FOR THE TRANSFORMED VARIABLE
-# make a new column in otiShells for cuberoot of mass called crMass
+## EXERCISE: plot crMass as a function of x_mm for otiShells, but no points!
 
 
-## LETS MAKE IT PLOT THE AXES, BUT NOT ANY POINTS!
-# plot crMass as a function of x_mm for otiShells, but no points!
-
-## ?? WHY WOULD WE WANT TO DO THAT??
+## QUESTION: WHY WOULD WE WANT TO DO THAT??
 ? points()
 
-## LETS PLOT THE "Pinguitellina" as red circles
+## EXERCISE: PLOT THE "Pinguitellina" as red circles
 
-## LETS PLOT THE "Abranda" as green squares
 
-## WHAT ELSE CAN WE SPECIFY FOR POINTS?
+## EXERCISE: PLOT THE "Abranda" as green squares
+
+
+## QUESTION: WHAT ELSE CAN WE SPECIFY FOR POINTS?
 
 ## PLOT IS SUPER GENERAL (IT WILL TRY TO PLOT ANYTHING). FACTORS DEFAULT TO BOXPLOTS...
 plot(crMass ~ siteName, otiShells)
 
 
-#######################################
 ## BOX PLOTS
-#######################################
+################################################################################
 ? boxplot()
 
-# make a box plot of Pinguitellina length
+# EXERCISE: make a box plot of Pinguitellina length
 boxplot()
 
-## SPLIT IT BY "siteName"?
+## EXERCISE: SPLIT IT BY "siteName"?
 
 
-## BETTER AXIS LABELS
+## EXERCISE: ADD BETTER AXIS LABELS
 
 
-## ADD "notch"ES?
-
-## ?? WHAT ARE THE "notch"es??
-
-## OVERLAY THE POINTS? ( IT WORKS BECAUSE siteName IS A FACTOR )
+## EXERCISE: ADD "notch"ES?
+## QUESTION: WHAT ARE THE "notch"es?
 
 
-#######################################
+## EXERCISE: OVERLAY THE POINTS USING points()? ( IT WORKS BECAUSE siteName IS A FACTOR )
+
+
+
+
 ## EXPLORATORY PLOTTING
-#######################################
+################################################################################
 ? pairs()
 
 ## A VERY COOL FUCNTION, BUT ONLY WORKS WITH NUMERIC DATA
-## Great way to quickly access collinearity among variables, check it for Pinguitellina?
+## Great way to quickly access collinearity among variables
+## EXERCISE: use pairs() on the Pinguitellina data?
 
 
 ## WHICH COLUMNS HAVE NUMERIC DATA??
+names(pingData) 
+comps <- names(pingData)[3:7]
+comps
 
-
-## PLOT ALL PAIR-WISE COMPARISONS FOR NUMERIC Pinguitellina DATA
+## EXERCISE: PLOT ALL PAIR-WISE COMPARISONS FOR NUMERIC Pinguitellina DATA
 
 
 ## and an explaination for why there are two relations instead of 1!
 
-#######################################
+
 ## 3D PLOTTING
-#######################################
+################################################################################
 
 # LETS USE THE BUILT IN volcano DATASET FOR THIS...
 ?volcano
@@ -182,11 +227,10 @@ image(volcano, col=terrain.colors(50))
 ## "ADD" CONTOURS OVER TOP OF image()
 contour(volcano, add=TRUE)
 
-#	It is possible to read shape files, and do basic GIS type things in R.
+# NOTE: It is possible to read shape files, and do basic GIS type things in R.
 
-#######################################
 ## BAR PLOTS
-#######################################
+################################################################################
 
 # I PERSONALLY REALLY DISLIKE BARPLOTS, BUT THEY ARE COMMONLY USED
 # R DOES NOT HAVE A STANDARD ERROR FUNCTION, BUT WE CAN WRITE ONE...
@@ -195,8 +239,8 @@ standard.error <- function(x) {  }
 ## REMEMBER ALL THE WAY BACK TO THE MORNING...
 ## USE "aggregate" TO GET THE mean otiShells['x_mm'] BY otiShells["taxonName"]
 ## TIP: USING otiShells["x_mm"] INSTEAD OF otiShells$x_mm GIVES YOU NICER COLUMN NAMES
-
 mn <- aggregate()
+
 # make a barplot of the mean length
 bp <- barplot()
 ## NOTE: BY ASSIGNING barplot() TO bp... WE CAN DO THE NEXT STEP
@@ -212,8 +256,13 @@ arrows(bp, mn$x_mm + se$x_mm, bp, mn$x_mm - se$x_mm, code=3, angle=90, length=0.
 
 ## ADD LABELS USING axis()
 
+
 ## STILL NOT WHAT WE WANT BECAUSE R DOES SKIPS LABELS THAT WOULD OVER WRITE
 # try again but rotating the axis labels 90 degrees
+
+
+
+
 
 ##  HOW DO WE FIX THE MARGIN SIZE...
 ##  SHOW ME HOW TO DO THAT CRAZY VOODOO THAT YOUDOO?
@@ -221,9 +270,8 @@ arrows(bp, mn$x_mm + se$x_mm, bp, mn$x_mm - se$x_mm, code=3, angle=90, length=0.
 ##  Afraid? "You will be. You... will... be." (Yoda) 
 
 
-#######################################
 ##  GLOBAL GRAPHIC PARAMETERS
-#######################################
+################################################################################
 
 ?par
 # NOTE: NO ONE REMEMBERS ALL OF THESE PARAMETERS BUT HOPEFULLY YOU WILL REMEMBER THAT ?par GETS YOU THE ANSWER
@@ -238,13 +286,18 @@ oldPar <- par()
 # use par() to set margin. hint: try 12 for margin 1
 
 
+
+
+
+
+
+
 # RESTORE ORIGINAL PARAMETERS
 par(oldPar)
 
 
-#######################################
 ## SAVING PLOTS
-#######################################
+################################################################################
 
 # NOTE: YOU CAN SAVE OR "EXPORT" THE GRAPHING WINDOW TO SAVE YOUR PLOTS
 # TIP: DON'T SAVE OR "EXPORT" THE GRAPHING WINDOW TO SAVE YOUR PLOTS
@@ -287,9 +340,8 @@ dev.off()
 ##  - REPEAT dev.off() until it says "cannot shut down device"
 
 
-#######################################
 ## MULTIPLE PANEL PLOTS
-#######################################
+################################################################################
 
 ## "mfrow" FILLS YOUR PANELS ACROSS THE TOP ROW AND THEN SEQUENTIAL ROWS DOWN
 ## "mfcol" FILLS YOUR PANELS DOWN THE LEFT MOST COLUMN FIRST...
@@ -337,9 +389,8 @@ mtext("Four plots of shell size", side=3, outer=TRUE, line=1, cex=1.5)
 par(oldPar)
 
 
-#######################################
 ##  ADDING ADDITIONAL THINGS TO PLOTS
-#######################################
+################################################################################
 plot(crMass ~ x_mm, pingData, type="p", axes=FALSE, ann=FALSE, pch=21, col="white", bg="black") 
 axis(1) 
 axis(2, las=2) 
@@ -348,6 +399,7 @@ mtext("Cuberoot shell mass (mg)", side = 2, line = 3)
 title("Figure 1", adj=0)
 
 ##  GET/PLOT A BEST FIT LINE USING lm()
+##	NOTE: will discuss this more later.
 mod <- lm(crMass ~ x_mm, pingData)
 ##  PLOT THE LINE USING (abline)
 abline(mod, lwd=2, lty=2, col='blue')

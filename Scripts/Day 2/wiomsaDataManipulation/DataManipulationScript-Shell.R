@@ -1,422 +1,437 @@
-###############################################
-##### Script for "Data manipulation in R" #####
-###############################################
+################################  FILE LICENSE  ################################
+#
+#	This file is copyright (C) 2018 Matthew Kosnik
+#
+#	This program is free software; you can redistribute it and/or modify it 
+#	under the terms of version 2 the GNU General Public License as published 
+#	by the Free Software Foundation.
+#
+#	This program is distributed in the hope that it will be useful, but WITHOUT
+#	ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+#	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+#	more details.
+#
+#	To view a copy of the license go to:
+#	http://www.fsf.org/copyleft/gpl.html
+#	To receive a copy of the GNU General Public License write the Free Software
+# 	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+################################################################################
 
-# originally prepared by David Nipperess
-# modified by Matthew Kosnik
+###############################  ABOUT THIS CODE  ##############################
+#
+#	This file contains R code for "Data manipulation in R" session
+#		created by David Nipperess
+#		modified by Matthew Kosnik
+#		last modified 2018.11.12
+#
+################################################################################
 
-##### Preliminary 1: Set up workspace ###########
-#################################################
+##	Preliminary: Set up workspace
+################################################################################
 
-# Set up a new project in R Studio
-# Where is your working directory?
-# Are the files you need in your working directory?
+#	Set up a new project in R Studio
+#	Where is your working directory?
+#	Are the files you need in your working directory?
+#	- Data needs to be in a subdirectory "./data"
 
-##### Preliminary 2: Data objects in R ##########
-#################################################
+##	REVIEW: Data objects in R
+################################################################################
+# This should all be review from YESTERDAY, but it is good to review. It is important.
 
-# this should all be review from yesterday, but it is a good review as. it is important.
+# EXERCISE: define a vector of the numerical values 1 to 27 and assign to an object called i
+( i <- 1:27 )
+# QUESTION: What do the "( )" do in this context?
 
-# define a vector of the numerical values 1 to 27 and assign to an object called x
-## @knitr DM1
-x <- 1:27
-## @knitr end DM1
+# EXERCISE: define a vector of length 27, with values a-z and assign to an object called x
+# HINT: use the constant "letters"
+# QUESTION: Is there anything unexpected about the content of this vector?
+( x <- letters[i] )
 
-# define a matrix (assign to y) with 9 rows and 3 columns using the data in x
-## @knitr DM2
-y <- matrix()
-## @knitr end DM2
+# EXERCISE: define a matrix (assign to y) with 3 rows and 9 columns using the data in x
+( y <- matrix() )
 
-# extract a vector from y using the numerical indices in x
+# EXERCISE: extract a vector from y using the numerical indices in i
 
 
-
-# define a 3-dimensional array (assign to z) with 3 rows, 3 columns and 3 layers, using the data in x
-## @knitr DM3
+# EXERCISE: define a 3-dimensional array (assign to z) with 3 rows, 6 columns and 2 layers, using the data in x
 z <- array(,dim=c())
-## @knitr end DM3
 
-# extract a reversed vector from z using x
- 
+# EXERCISE: select a row, a column and a layer from z
+
+
+
+
+# EXERCISE: select from z using another variable (e.g., i)
+# QUESTION: what does selecting using "-i" do, why?
+
+
+
+# EXERCISE: extract a reversed vector from z using x, hint: use the function "rev()"
+
+
 # QUESTION: What does the function rev() do? 
 # QUESTION: How can you find out?
 
-# browse the datasets available in R, find Edgar Anderson's Iris data and load it as a dataframe 
-# 50 replicate measurements for each of 3 species of Iris
-## @knitr DM4
+# names you CANNOT use for variables
+?Reserved
+# QUESTION: what characters cannot be used in variable names (hint: follow link to make.names())? 
+
+# EXERCISE: browse the datasets available in R 
+################################################################################
 data()
+
+# EXERCISE: load Edgar Anderson's Iris data 
 data(iris)
-## @knitr end DM4
 
-# QUESTION: what does head() do?
-## @knitr DM5
+# EXERCISE: explore the top few / bottom few rows Edgar Anderson's Iris data 
+# QUESTION: what do the functions head() and tail() do?
+# QUESTION: how can I get head() and tail() to display an arbritary number of rows?
 head(iris)
+tail(iris)
 
-# QUESTION: what does dim() do?
-## @knitr DM6
-dim(iris)
+# QUESTION: what does the function summary() return?
+summary(iris)
 
-# QUESTION: what does mode() do?
-## @knitr DM7
+# QUESTION: what does the function dim() return?
+
+
+# QUESTION: what does class() return?
+
+
+# QUESTION: what does mode() return?
 mode(iris)
+mode(iris[1,])
+mode(iris[,1])
 
-# use as.matrix() to convert the iris dataset to a matrix and use head() & mode() to check the data
-## @knitr DM8
+# QUESTION: what does attributes() return?
+attributes(iris)
+attributes(iris[1,])
+attributes(iris[,1])
+
+# QUESTION: what does str() return?
+str()
+
+# NOTE: there is a fair bit of overlap in these functions.
+# 	other related functions include typeof()
+
+# EXERCISE: referencing columns...
+iris[,1]
+iris[,'Sepal.Length']
+iris$Sepal.Length
+
+# EXERCISE: use as.matrix() to convert the iris dataset to a matrix
 iris2 <- as.matrix()
-## @knitr end DM8
-		# Question: why quotes?
-		# Question: character?
-		
-# QUESTION: what happens when you try to take the mean of iris2[,'Sepal.Length']
+
+# EXERCISE: use head() or tail() to check the data
+# QUESTION: why do the values have quotes?
 
 
-# use as.matrix() to convert only the numeric columns of iris dataset. Check the data.
-## @knitr DM9
-iris3 <-
-  ## @knitr end DM9
-# QUESTION: what is the mean sepal length?
+# EXERCISE: use mode() to check the data
+# QUESTION: why are they character?
+
+
+# QUESTION: what happens when you try to take the mean() of iris2[,'Sepal.Length']
+
 
 # QUESTION: how might we work around this issue, hint: as.numeric()?
 
 
-## using matrices instead of data frames 
+# EXERCISE: use as.matrix() to convert only the numeric columns of iris dataset.
+iris3 <-
 
-# when data is all numbers (except for row and column names), I normally use matrices rather than dataframes
-# if you have row names in your data file, and you want to convert to a matrix, you will need to specify which column has the row names (see the row.names argument in the read.table function)
+# EXERCISE: Check the data
 
-##### Exercise 1: Reading data ##################
-#################################################
 
-##	 Use the read.table (and related functions) to read in datafiles: "carbonateMetaData.txt", "carbonateMassData.csv", "carbonateSynonomy.csv"
 
-## ABOUT THESE DATA: These are sediment samples from Heron Reef. Students were instructed to sort the sediment into the organisms that created it, and to report the weight of each taxonomic group in grams. "carbonateMassData.csv" contains the mass by taxonomic group data. "carbonateMetaData.txt" contains metadata - information aboit the sample provided to the students. "carbonateSynonomy.csv" is a list of spelling corrections and synonomies that I use to harmonise the data without changing the original data.
+# QUESTION: what is the mean sepal length?
 
-##	TIP: always inspect your data BEFORE attempting to import into R 
 
-# use read.table() to read carbonateMetaData.txt. read.table() is the generic function
+# EXERCISE: referencing columns...
+iris3[,1]
+iris3[,'Sepal.Length']
+iris3$Sepal.Length
 
-## @knitr SET
+# HINT: it is better to write clearer / readable / flexible code
+#	[ will you remember what values are in column 1 in an hour? ]
+#	[ will your code still work if your dataset gets a new column or if the columns are reordered? ]
 
-## @knitr DM10
-setwd("/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 2/wiomsaDataManipulation/")
-cMeta <- read.table("./data/carbonateMetaData.txt", header=TRUE, sep="\t", as.is=TRUE)
-## @knitr end DM10
+# SUGGESION:  matrices vs. data frames 
+# in general dataframes are a bit more flexible
+# when data is all numbers (except for row and column names), You can use matrices rather than dataframes
+# if you have row names in your data file, you can specify which column has the row names (see the row.names argument in the read.table function)
 
-# read.delim() is read.table(), but will default values set for tab-delimited files
-# use it to read ./data/carbonateMetaData.txt
-## @knitr DM11
-cMeta <- read.delim()
-## @knitr end DM11
+##	TOPIC 1: Loading your own data
+################################################################################
+# Use read.table() (and related functions) to read in the datafiles: 
+#		"carbonateMetaData.txt" 
+#		"carbonateMassData.csv"
+#		"carbonateSynonomy.csv"
 
-# read.table() is the generic function and can read csv files...
-## @knitr DM12
-setwd("/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 2/wiomsaDataManipulation/")
+# ABOUT THESE DATA: These are sediment samples from Heron Reef. Students were instructed to sort the sediment into the organisms that created it, and to report the weight (in grams) of each taxonomic group. "carbonateMassData.csv" contains the mass by taxonomic group data. "carbonateMetaData.txt" contains metadata - information aboit the sample provided to the students. "carbonateSynonomy.csv" is a list of spelling corrections and synonomies that I use to harmonise the data without changing the original data.
+
+# TIP: always inspect your data BEFORE attempting to import into R 
+
+# NOTE: column names must be valid varible names (or will be converted to valid variable names)!
+# QUESTION: what happens to characters that cannot used in a valid variable name?
+? make.names()
+
+# read.table() is the generic function
+# EXERCISE: use read.table() to read "./data/carbonateMetaData.txt". Check the data.
+cMeta <- read.table("./data/carbonateMetaData.txt")
+
+# QUESTION: what happened to our header row / column names?
+# EXERCISE: try again and fix the header row / column names
+# TIP: the up arrow key can reduce the amount of typing you need to do
+cMeta <- read.table()
+
+# read.delim() is read.table(), but with defaults set for tab-delimited files
+# saves having to specify sep and header.
+# EXERCISE: use read.delim() to read ./data/carbonateMetaData.txt
+cMeta <- read.delim("./data/carbonateMetaData.txt")
+
+# read.table() is the generic function and it can read csv files...
 cMass <- read.table('./data/carbonateMassData.csv', header = TRUE, sep = ",", quote = "\"", fill = TRUE, comment.char = "", as.is=TRUE)
-## @knitr end DM12
-# OR: read.csv() is read.table(), but will default values set for csv files
-# use it to read: ./data/carbonateSynonomy.csv
-## @knitr DM13
+
+# read.csv() is read.table(), but will default values set for csv files
+# saves having to specify header, sep, quote...
+# EXERCISE: use read.csv() to read: ./data/carbonateSynonomy.csv
 cSyn <-read.csv()
-## @knitr end DM13
 
-## @knitr DM13a
-setwd("/Users/stephdagata/Documents/GitHub/MQE-WORKSHOP-R-2018b/Scripts/Day 2/wiomsaDataManipulation/")
-cSyn <-read.csv("./data/carbonateSynonomy.csv", header = TRUE, sep = ",", quote = "\"", fill = TRUE, comment.char = "", as.is=TRUE)
-## @knitr end DM13a
+# QUESTION: Why did that fail and how can we 'skip' 5 lines of a datafile?
+?read.csv()
+cSyn <-read.csv()
 
-#	QUESTION: What does 'as.is' do, and why might we want to use it?
-#	QUESTION: What does 'skip' do, and why might we want to use it?
+# QUESTION: How did R treat the data, how can we get it to treat the strings 'as.is' and not as factors?
+# TIP: factors can be a real pain, I suggest not using factors unless you need to.
+cSyn <-read.csv()
 
-##	TIP: always inspect your data AFTER importing to make sure you have imported it correctly...
-#	QUESTION: What do each of these functions: head(), tail(), nrow(), dims(), summary() do?
+# TIP: always inspect your data AFTER importing to make sure you have imported it correctly...
+# QUESTION: What do each of these functions: head(), tail(), nrow(), dims(), summary(), mode(), class(), typeof(), attributes(), str() do?
 
 
+
+
+
+
+
+
+
+##	EXERCISE: load & verify that you have 3 nice files with headers 
 
 
 
 
 ## DIFFERENT WAYS REFERENCE COLUMNS, SHOULD ALL WORK
-## @knitr DM14
-cMass[,"mass"]
-## @knitr DM15
-cMass[["mass"]]
-## @knitr DM16
+cMass[,"mass"] 
+cMass[["mass"]] 
 cMass$mass
-## @knitr end DM16
 
-##### Exercise 2: Subsetting data ###############
-#################################################
 
-## 	QUESTION: How many taxon occurences have a mass > 25 (in data frame cMass)?
-## @knitr DM17
-cMass[(cMass$mass>25),]			# this lists, but does not count, the taxon occurences
-## @knitr end DM17
+##	TOPIC 2: Subsetting data
+################################################################################
+# You can subset data using either logical values (true/false), or:
+# specify index (row or column numbers / names)
 
-# QUESTION: What does (cMass$mass>25) return?
-## @knitr DM18
-length(cMass$mass>25)
-## @knitr end DM18
+# EXERCISE: Which taxon occurences have a mass > 25 (in dataframe cMass)?
+(cMass$mass>25)
 
-# QUESTION: Why is this not the answer we want?
-## @knitr DM19
-length(which(cMass$mass>25))	
-## @knitr end DM19
+# EXERCISE: select the rows (in cMass) where the mass is more than 25
+cMass[,]
 
-# QUESTION: Why is this the answer we want?
+# QUESTION: How many taxon occurences have a mass > 50 (in dataframe cMass)?
+length(cMass$mass>50)
+
+# QUESTION: Why is this not the answer we want? hint: two ways to specify columns
+
 # QUESTION: What does which() return?
-## @knitr DM20
-which(cMass$mass>25)
-## @knitr end DM20
+? which()
+which(cMass$mass>50)
 
-## 	QUESTION: How much carbonate is from taxon occurences having a mass > 25 (in data frame cMass)?
-## @knitr DM21
-sum(which(cMass$mass>25)) 					# does not work as intended... what does which return?
-## @knitr DM22
-sum(cMass[which(cMass$mass>25),'mass'])		# this is the answer we want.
-## @knitr end DM22
+length(which(cMass$mass>50))	
+# QUESTION: Why is this the answer we want?
 
-##	QUESTION: What is the average mass of Gastropoda in these samples?
-## @knitr DM23
-mean(cMass$mass[(cMass$taxon == 'Gastropoda')])		# is this what we want?
-## @knitr end DM23
+# QUESTION: How much carbonate is from taxon occurences having a mass > 25 (in dataframe cMass)?
+sum(which(cMass$mass>25))
+# does not work as intended... what does which() return?
 
-#	LET'S DOUBLE CHECK THAT ALL THE "Gastropoda" will match "Gastropoda
-## @knitr DM24
-unique(cMass$taxon)
-## @knitr DM25
-unique(sort(cMass$taxon))		# what do each of these functions do?
-## @knitr end DM25
+# EXERCISE: Use sum() and which() to get the answer
+sum(cMass[which(cMass$mass>25),'mass'])
 
-# A strict match is not what we want... We could manually list all the row numbers...
-## @knitr DM26
+# EXERCISE: What is the average mass of Gastropoda in these samples?
+mean(cMass$mass[(cMass$taxon == 'Gastropoda')])
+
+# QUESTION: is this what we want?
+
+# let's double check that all the "Gastropoda" will match "Gastropoda
+# EXERCISE: use unique() to see the unique values of cMass$taxon
+unique()
+
+# EXERCISE: use unique() and sort() to get a more readable list of the unique values of cMass$taxon
+unique(sort(cMass$taxon))
+
+# a strict match is not what we want... We could manually list all the row numbers...
 cMass[c(9,21,32),] 					# but we would need to list all the rows with gastropod data
-## @knitr DM27
 mean(cMass[c(9,21,32),'mass'])		# will work but painfully and inflexible.
-## @knitr end DM27
-# A more robust solution (we will get to an even better solution later)
-## @knitr DM28
+
+# a more robust solution (we will get to an even better solution later)
 ?grep
-## @knitr DM29
 grep("Gastropod", cMass$taxon, ignore.case=TRUE)
-## @knitr DM30
 cMass[grep("Gastropod", cMass$taxon, ignore.case=TRUE),]
-## @knitr end DM30
-# Since we know taxon names are case insentitive...
-## @knitr DM31
+
+# since we know taxon names are case insentitive...
 cMass$taxon <- tolower(cMass$taxon)
 
-## @knitr DM32
 mean(cMass$mass[grep("gastropod", cMass$taxon)])
-## @knitr end DM32
 
 # EXERCISE: what is the biggest bivalve mass?
 # Hint: max(),grep()
 
 
-##### Exercise 3: Aggregating data ##############
-#################################################
-
-# use aggregate() produce a table of the total idenfied mass from each sample
-## @knitr DM33
+##	TOPIC 3: Aggregating data
+################################################################################
+# R can easily compute summary statistics for subsets 
 ?aggregate
-## @knitr DM34
-( sampleMass <- aggregate(cMass$mass,by=list(cMass$sample),FUN=sum) )
+
+# EXERCISE: use aggregate() produce a table of the total idenfied mass from each sample
+sampleMass <- aggregate(cMass$mass,by=list(cMass$sample),FUN=sum)
+head(sampleMass, 3)
+
+# add better column names
 colnames(sampleMass) <- c('ID','massIdentified')
 head(sampleMass)
-## @knitr end DM34
 
 # Now we have a summary table tellling us how much sample they were able to identify
 # You can aggregate multiple data columns at one time (using the same function).
 
 
-##### Exercise 4: Matching data #################
-#################################################
+##	TOPIC 4: Merging data
+################################################################################
+# R can do merge dataframes like a relational database join...
+?merge
 
 # Since I know how much sample they had to start with - how much of sample did they identify?
-## @knitr DM35
-?merge
-## @knitr DM36
-( mergedSamples <- merge(cMeta,sampleMass) )		# What does the extra set of () do?
-# now we have the original sample mass and the identified sample mass in the same dataframe.
-## @knitr DM37
-mergedSamples$proID <- mergedSamples$massIdentified / mergedSamples$mass
-## @knitr end DM37
 
-# now we have the proportion of each sample identified, did big samples have less identified?
-## @knitr DM38
-plot(mergedSamples$proID ~ mergedSamples$mass)	#no, but we have found a couple of lazy students!
-## @knitr end DM38
+# make a new dataframe with the original sample mass and the identified sample mass.
+# NOTE: we do not have to specify the columns to match because they have the same name.
+( mergedSamples <- merge(cMeta,sampleMass) )
 
-# We can also use merge to clean up our names
-# Let's clean up our names - are we missing any names from our synonomy list?
-## @knitr DM39
+# EXERCISE: calculate the proportion of each sample identified and store it in column "proID"
+mergedSamples$proID <- 
+
+# QUESTION: do bigger samples have a less of the sample identified? 
+plot(mergedSamples$proID ~ mergedSamples$mass)
+
+# We can also use merge to clean up our taxon names
+# QUESTION: are we missing any names from our synonomy list?
 cMass[!(cMass$taxon%in%cSyn$badName),]
-## @knitr DM40
 cMass[!((cMass$taxon%in%cSyn$badName)|(cMass$taxon%in%cSyn$taxonName)),]
-## @knitr DM41
+
+# make a new dataframe "cMass2" with the good name
+# NOTE: must specify columns to match because the column names are not the same.
 cMass2 <- merge(cMass,cSyn, by.x='taxon',by.y='badName')
-## @knitr DM42
-head(cMass2)
-## @knitr DM43
-cMass2[(cMass2$taxon=='cirripedia'),]					# here lies the biggest danger of merge
-## @knitr DM44
-nrow(cMass)
-## @knitr DM45
-nrow(cMass2)											# we lost data
-## @knitr DM46
-cMass[cMass$sample =='E01',]							# compare sample 1 in the oringal data
-## @knitr DM47
-cMass2[cMass2$sample =='E01',]							# compare sample 1 in the merged data
-## @knitr DM48
-cMass2 <- merge(cMass,cSyn, by.x='taxon',by.y='badName', all.x=TRUE) 	# the fix
-## @knitr DM49
+head(cMass2, 2)
+
+# NOTE/IMPORTANT: always check your data after a merge to make sure it worked as intended.
 nrow(cMass) == nrow(cMass2)
-## @knitr DM50
-cMass[cMass$sample =='E01',]							# compare sample 1 in the oringal data
-## @knitr DM51
-cMass2[cMass2$sample =='E01',]							# compare sample 1 in the merged data
-## @knitr DM52
+cMass2[(cMass2$taxon=='cirripedia'),]					# here lies the biggest danger of merge
+
+# EXERCISE: compare sample 'E01' from the two dataframes
+cMass[,]
+cMass2[,]
+# QUESTION: are they the same?
+
+# make a new dataframe "cMass2" with the good name - "left join"
+cMass2 <- merge(cMass,cSyn, by.x='taxon',by.y='badName', all.x=TRUE)
+nrow(cMass) == nrow(cMass2)
+
+# EXERCISE: compare sample 'E01' from the two dataframes
+cMass[cMass$sample =='E01',]
+cMass2[cMass2$sample =='E01',]
+# QUESTION: are they the same?
+
+# a quick way to make sure that the good names are also in cMass2$taxonName
 cMass2[is.na(cMass2$taxonName),]
-## @knitr DM53
 cMass2[is.na(cMass2$taxonName),'taxonName'] <- cMass2[is.na(cMass2$taxonName),'taxon']
-## @knitr DM54
+
 cMass2[cMass2$sample =='E01',]							# see sample 1 in the merged data
-## @knitr end DM54
 
-# now we have nice dataset that we can use, but we have a strict record of the changes we made to the orignal data.
-# we could download the data again and be able to quickly repeat our analyses without a lot of painfil edits.
+# NOTE: now we have 'clean' dataset that we can use and we have a record of the modifications.
+# We could download the data again and be able to quickly repeat our analyses without a lot of painfil edits.
 
-##### Exercise 5: Tabulating data ###############
-#################################################
+
+##	TOPIC 5: Tabulating data
+################################################################################
 
 ##	NEW DATA!
-##	sames of larger benthic forams from Heron Island, Great Barrier Reef.
-## @knitr DM55
+##	larger benthic forams from Heron Island, Great Barrier Reef.
 forams <- read.csv('./data/2017foramAnon.csv')
 foramNames <- read.csv('./data/codesForams.csv')
-## @knitr end DM55
 
-# produce an incidence (presence/absence) matrix of species for all samples
-## @knitr DM56
+# EXERCISE: make an contingency table (matrix species by sites)
 ?table
-## @knitr DM57
-incidence_table <- 
-incidence_table		# give us the number of rows for each foram at each site... (abundance)
-## @knitr end DM57
+foramTable <- 
 
-# make it a presence/absence matrix 
-## @knitr DM58
-incidence_table <- 
-incidence_table
-## @knitr end DM58
+# QUESTION: what are the rows, columns, and cell values?
+foramTable
 
-## imagine the data in a slightly different format.... ((review of aggregate))
-##	use aggregate() to determine the abundance of foram taxa by sample and taxonCode. hint: length()
-## @knitr DM59
-foramAbundance <- aggregate()
+# EXERCISE: make it a presence/absence matrix 
+foramTable <-
+# NOTE: ifelse() will also do this
+
+
+# imagine the data in a slightly different format.... ((review of aggregate))
+# EXERCISE: use aggregate() to determine the abundance of foram taxa by sample and taxonCode. hint: length()
+foramAbundance <- aggregate(,by=list(),FUN=length)
 colnames(foramAbundance) <- c('sample','taxonCode','abundance')
-## @knitr end DM59
 
-## use merge() to add the taxon names to the file
-## @knitr DM60
+# EXERCISE: use merge() to add the taxon names to the file
 foramAbundance <- merge(foramAbundance,)
-## @knitr end DM60
 
-## check the merged file to make sure it is what we want it to be
+# EXERCISE: check the merged file to make sure it is what we want it to be
 
-# produce an abundance matrix of all foram species for all sites using foramAbundance
-# hint: use tapply() & sum()
-## @knitr DM61
+
+
+# EXERCISE: produce an abundance matrix of all foram species for all sites using foramAbundance
+# HINT: use tapply() & sum()
 ?tapply
-## @knitr DM62
 abundance_table <- tapply()
-## @knitr end DM62
 
-# check to make sure that it looks like it should...
-
-# how do we change the NA to 0? NA can be a pain!
-
-# check to make sure that it looks like it should...
+# EXERCISE: check to make sure that it looks like it should...
+# TIP: try only looking at the first 5 rows and first 5 columns
 
 
-##### Exercise 6: Custom tabulation #############
-#################################################
 
-# using an apply function on the abundance table
+# QUESTION: how do we change the NA to 0? NA can be a pain!
 
-# first let's define an inverse simpson function
-# sum of the proportional abundances squared
-# https://en.wikipedia.org/wiki/Diversity_index#Inverse_Simpson_index
 
-# convert the matrix to proportional abundances
-## @knitr DM63
-p <- abundance_table/sum(abundance_table) # this doesn't work
-## @knitr DM64
-sum(p) # this is why it doesn't work
-## @knitr DM65
-p <- abundance_table[1,]/sum(abundance_table[1,])
-p
-## @knitr DM66
-sum(p)
-## @knitr DM67
-simp <- sum(p^2)
-simp
-## @knitr DM68
-isimp <- 1/sum(p^2)
-isimp
-## @knitr end DM68
+# EXERCISE: check to make sure that it looks like it should...
 
-# lets wrap that as a function
-# needs: x a list of abundances
-# returns: inverse simpson index
-## @knitr DM69
-invsimp <- function(x) {
-	p <- x/sum(x)
-	invsimp <- 1/sum(p^2)
-}
-## @knitr end DM69
 
-# double check that this works
-## @knitr DM70
-isimp2 <- invsimp(abundance_table[1,])
-isimp2
-## @knitr end DM70
 
-# get site diversity for every site with just one line of code!
-# use: apply() and invsimp()
-## @knitr DM71
-site_diversity <- apply(abundance_table,)
-site_diversity
-## @knitr end DM71
-
-##### Exercise 6: Sorting data ##################
-#################################################
-
-# use sort() to sort the foramAbundance data by decreasing abundance
-## @knitr DM72
+##	TOPIC 6: Sorting data
+################################################################################
 ?sort
-## @knitr DM73
-sort() # simple option for vectors
-## @knitr end DM73
 
-# QUESTION: how is order() different than sort()
+# EXERCISE: use sort() to show foram abundance from most to least abundant
+sort(foramAbundance$abundance, decreasing = TRUE)
+
+# order() returns index numbers instead of values. 
 # order() is useful if you need to sort a dataframe or matrix by the values in one column.
+order(foramAbundance$abundance, decreasing = TRUE) 
 
-# EXERCISE: use order() to sort foramAbundance by decreasing abundance 
+# EXERCISE: use order() to sort foramAbundance from most to least abundant 
+foramAbundance[order(foramAbundance$abundance, decreasing = TRUE),]
 
 
+##	TOPIC 7: Random sampling of data
+################################################################################
 
-##### Exercise 7: Random sampling of data #######
-#################################################
-## @knitr DM74
 ?sample
-## @knitr DM75
 sample(1:100,size=5,replace=FALSE)
-## @knitr end DM75
 
 # EXERCISE: produce a 5x5 submatrix from the abundance table using random sampling
-# hint: nrow() & ncol() can help
-## @knitr DM76
+# HINT: nrow() & ncol() can help
+# NOTE: that everyone will get a different matrix!
 submat <-
-submat # NOTE: that everyone will get a different matrix!
-## @knitr end DM76
+submat 
